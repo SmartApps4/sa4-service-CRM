@@ -65,7 +65,8 @@ angular.module('SA4.CRM', [])
     )
     .then(function(result) {
         CRM = result;
-  };
+    });
+  } 
 
   var mapResult = function(input, map) {
     var output = []; 
