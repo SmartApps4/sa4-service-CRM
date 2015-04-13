@@ -31,7 +31,7 @@ angular.module('SA4.CRM', [])
         name: "contacts",
         type: "dynamic",
         query: null,
-        select: "FullName",
+        select: null,
         fieldMap: {
           FullName: "Name"
         },
