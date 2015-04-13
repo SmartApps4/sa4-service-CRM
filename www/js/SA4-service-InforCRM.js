@@ -64,7 +64,7 @@ angular.module('SA4.CRM', [])
         JSONFile
     )
     .then(function(result) {
-        CRM = result;
+        CRM = result.data;
     });
   } 
 
