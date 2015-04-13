@@ -33,7 +33,8 @@ angular.module('SA4.CRM', [])
         query: null,
         select: null,
         fieldMap: {
-          FullName: "Name"
+          FullName: "Name",
+          $key: "Id"
         },
         format: "json",
         get: function() {
