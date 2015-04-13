@@ -88,22 +88,19 @@ function refit_keys(o, map){
 }
 
 
-
-
-
   var getCRM = function(CRM_Name) {
     return CRM[CRM_Name];
   };
 
   var setConfig = function(newConfig) {
-      $window.localStorage['InforCRM_config'] = JSON.stringify(newConfig);
+      $window.localStorage['CRM_config'] = JSON.stringify(newConfig);
       config = newConfig;
-    };
+  };
 
-    var getConfig = function(){
-      config = JSON.parse($window.localStorage['InforCRM_config'] || JSON.stringify(default_config));
+  var getConfig = function(){
+    config = JSON.parse($window.localStorage['CRM_config'] || JSON.stringify(default_config));
       return config;
-    };
+  };
 
   return {
         getCRM: getCRM,
