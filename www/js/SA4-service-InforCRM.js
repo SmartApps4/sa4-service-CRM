@@ -1,6 +1,6 @@
 angular.module('SA4.CRM', [])
 
-.factory('CRM', function(InforCRM, $window){
+.factory('CRM', function(InforCRM, $window, $http, $q){
   var default_config = { 
       "CRM_Url" : "http://Sa4demo-mfg.cloudapp.net:3333/sData",
       "username": "admin",
@@ -57,6 +57,14 @@ angular.module('SA4.CRM', [])
         }
       }
     }
+  };
+
+  var overrideCRM = function(JSONFile) {
+    return $http.get(
+        JSONFile
+    )
+    .then(function(result) {
+        CRM = result;
   };
 
   var mapResult = function(input, map) {
