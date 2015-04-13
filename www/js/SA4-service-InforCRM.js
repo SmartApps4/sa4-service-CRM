@@ -1,4 +1,4 @@
-angular.module('SA4.InforCRM', [])
+angular.module('SA4.CRM', [])
 
 .factory('CRM', function(InforCRM){
   var CRM = {
