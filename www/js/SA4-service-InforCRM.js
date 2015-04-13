@@ -32,7 +32,9 @@ angular.module('SA4.CRM', [])
         type: "dynamic",
         query: null,
         select: "FullName",
-        fieldMap: null,
+        fieldMap: {
+          FullName: "Name"
+        },
         format: "json",
         get: function() {
           return InforCRM.getFeed(CRM.InforCRM.contacts);
