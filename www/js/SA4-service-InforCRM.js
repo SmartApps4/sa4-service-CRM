@@ -1,6 +1,6 @@
 angular.module('SA4.CRM', [])
 
-.factory('CRM', function(InforCRM){
+.factory('CRM', function(InforCRM, $window){
   var CRM = {
     InforCRM: {
       feeds: {
