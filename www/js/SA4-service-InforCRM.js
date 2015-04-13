@@ -1,6 +1,12 @@
 angular.module('SA4.CRM', [])
 
 .factory('CRM', function(InforCRM, $window){
+  var default_config = { 
+      "CRM_Url" : "http://Sa4demo-mfg.cloudapp.net:3333/sData",
+      "username": "admin",
+      "password": "password"
+    };
+  
   var CRM = {
     InforCRM: {
       feeds: {
