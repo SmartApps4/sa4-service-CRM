@@ -120,6 +120,7 @@ function refit_keys(o, map){
 
   return {
         getCRM: getCRM,
+        overrideCRM: overrideCRM,
         mapResults: mapResult,
         refit_keys: refit_keys,
         setConfig: setConfig,
