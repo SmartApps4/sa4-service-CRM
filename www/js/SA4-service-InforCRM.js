@@ -6,7 +6,7 @@ angular.module('SA4.CRM', [])
       "username": "admin",
       "password": "password"
     };
-  
+
   var CRM = {
     InforCRM: {
       feeds: {
@@ -32,6 +32,7 @@ angular.module('SA4.CRM', [])
         type: "dynamic",
         query: null,
         select: "FullName",
+        fieldMap: null,
         format: "json",
         get: function() {
           return InforCRM.getFeed(CRM.InforCRM.contacts);
@@ -46,9 +47,6 @@ angular.module('SA4.CRM', [])
             Description: "Name", 
             SalesPotential: "Potential", 
             AccountName : "Name"
-        },
-        map: function(result) {
-          return mapResult(result.data.$resources,CRM.InforCRM.opportunities.fieldMap);
         },
         format: "json",
         get: function() {
