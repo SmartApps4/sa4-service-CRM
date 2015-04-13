@@ -1,0 +1,20 @@
+<ion-view view-title="Groups">
+  <ion-content>
+    <ion-refresher pulling-text="Pull to refresh" on-refresh="doRefresh()">
+    </ion-refresher>
+    <label class="item item-input">
+        <span class="input-label">Query</span>
+          <input type="text" class="item-text-wrap" ng-model="data.query">
+    </label>
+    <button ng-click="doRefresh()">Refresh</button>
+
+    <ion-list>
+      <ion-item ng-repeat="group in data.groups" ui-sref="app.group({groupId : group.$key, currentGroup: group })">
+        {{group.$descriptor}}
+      </ion-item>
+    </ion-list>
+  </ion-content>
+</ion-view>
+
+
+

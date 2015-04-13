@@ -1,0 +1,18 @@
+<ion-view view-title="Feeds">
+  <ion-content>
+    <ion-refresher pulling-text="Pull to refresh" on-refresh="doRefresh()">
+    </ion-refresher>
+    
+    <label class="item item-input">
+        <span class="input-label">Query</span>
+          <input type="text" class="item-text-wrap" ng-model="data.query">
+    </label>
+    <button ng-click="doRefresh()">Refresh</button>
+
+    <ion-list>
+      <ion-item ng-repeat="feed in data.feeds" ui-sref="app.feed({feedId : feed.$descriptor, currentFeed: feed })">
+        {{feed.$descriptor}}
+      </ion-item>
+    </ion-list>
+  </ion-content>
+</ion-view>
