@@ -1,66 +1,65 @@
 angular.module('SA4.CRM', [])
 
 .factory('CRM', function(InforCRM, $window, $http, $q){
+
+  //Config Paramaters 
   var default_config = { 
       "CRM_Url" : "http://Sa4demo-mfg.cloudapp.net:3333/sData",
       "username": "admin",
       "password": "password"
-    };
+  };
+
+  var config = default_config;  //use overrideCRM to change 
 
   var CRM = {
     InforCRM: {
-      feeds: {
-        name: null,
-        query: null, 
-        format: "json",
-        get: function() {
-          return InforCRM.getFeeds(CRM.InforCRM.feeds);
-        }
+      get: function(entity) {
+        return InforCRM.getFeeds(entity);
       },
-      accounts: {
-        name: "accounts",
-        type: "dynamic",
-        query: null,
-        select: "AccountName,address/City,address/State",
-        format: "json",
-        get: function() {
-          return InforCRM.getFeed(CRM.InforCRM.accounts);
-        }
-      },
-      contacts: {
-        name: "contacts",
-        type: "dynamic",
-        query: null,
-        select: null,
-        fieldMap: {
-          FullName: "Name",
-          $key: "Id"
+      entities: {
+        feeds: {
+          name: null,
+          query: null, 
+          select: null,
+          fieldMap: null,
+          format: "json"
         },
-        format: "json",
-        get: function() {
-          return InforCRM.getFeed(CRM.InforCRM.contacts);
-        }
-      },
-      opportunities: {
-        name: "opportunities",
-        type: "dynamic",
-        query: null,
-        select: "Description,SalesPotential,account/AccountName",
-        fieldMap: {
-            Description: "Name", 
-            SalesPotential: "Potential", 
-            AccountName : "Name"
+        accounts: {
+          name: "accounts",
+          type: "dynamic",
+          query: null,
+          select: null,
+          fieldMap: null,
+          format: "json",
         },
-        format: "json",
-        get: function() {
-          return InforCRM.getFeed(CRM.InforCRM.opportunities);
+        contacts: {
+          name: "contacts",
+          type: "dynamic",
+          query: null,
+          select: null,
+          fieldMap: null,
+          format: "json"
+        },
+        opportunities: {
+          name: "opportunities",
+          type: "dynamic",
+          query: null,
+          select: null,
+          fieldMap: null,
+          format: "json",
         }
       }
     }
   };
 
   var overrideCRMData = function(CRMData) {
-    //add overrides to CRM array 
+    //add overrides to CRM service object 
+    //config items 
+    if(CRMData.config.Url){
+      config.CRM_URL = CRMData.config.Url; 
+    };
+
+   //Get overrides for each entity  
    _.each(CRMData.entities, function(entityValue, entityKey) {
       _.each(CRMData.entities[entityKey], function(itemValue, itemKey){
         CRM[CRMData.config.CRM][entityKey][itemKey] = itemValue; 
@@ -81,29 +80,6 @@ angular.module('SA4.CRM', [])
     return output; 
   }; 
    
-function refit_keys(o, map){
-    var build, key, destKey, ix, value;
-
-    build = {};
-    for (key in o) {
-        // Get the destination key
-        destKey = map[key] || key;
-
-        // Get the value
-        value = o[key];
-
-        // If this is an object, recurse
-        if (typeof value === "object") {
-            value = refit_keys(value);
-        }
-
-        // Set it on the result using the destination key
-        build[destKey] = value;
-    }
-    return build;
-}
-
-
   var getCRM = function(CRM_Name) {
     return CRM[CRM_Name];
   };
@@ -122,7 +98,6 @@ function refit_keys(o, map){
         getCRM: getCRM,
         overrideCRMData: overrideCRMData,
         mapResults: mapResult,
-        refit_keys: refit_keys,
         setConfig: setConfig,
         getConfig: getConfig
   }
@@ -215,20 +190,20 @@ function refit_keys(o, map){
     var getFeed = function(feedConfig){
       return $http.get(
         buildUrl(config.CRM_Url,"dynamic",feedConfig.name,feedConfig.query,feedConfig.select,"json"),
-        {method: 'GET', 
+        { headers: {'Authorization':  'Basic ' + btoa(config.username + ":" + config.password) }},
+        { method: 'GET', 
           transformResponse: function (data, headers) {
-            var data = data.replace(/\w+/g, function(m) {
-              return feedConfig.fieldMap[m] || m;
-            });
-            return JSON.parse(data);
+            if(feedConfig.fieldMap) {
+              var data = data.replace(/\w+/g, function(m) {
+                return feedConfig.fieldMap[m] || m;
+              });
+            }
+            return JSON.parse(data);  
           }
-        },
-        { headers: {'Authorization':  'Basic ' + btoa(config.username + ":" + config.password) }}
-    )};
+        }
+      )
+    };
 
-
-
-      //text = text.replace(/old/g, 'new')
 
     //Entity Related Methods
     var getGroups = function (query){
