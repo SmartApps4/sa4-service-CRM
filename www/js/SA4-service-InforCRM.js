@@ -59,8 +59,13 @@ angular.module('SA4.CRM', [])
     }
   };
 
-  var setCRMData = function(CRMdata) {
-    CRM = CRMdata; 
+  var overrideCRMData = function(CRMData) {
+    //add overrides to CRM array 
+   _.each(CRMData.entities, function(entityValue, entityKey) {
+      _.each(CRMData.entities[entityKey], function(itemValue, itemKey){
+        CRM[CRMData.config.CRM][entityKey][itemKey] = itemValue; 
+      })
+    });
   }; 
 
   var mapResult = function(input, map) {
@@ -115,7 +120,7 @@ function refit_keys(o, map){
 
   return {
         getCRM: getCRM,
-        setCRMData: setCRMData,
+        overrideCRMData: overrideCRMData,
         mapResults: mapResult,
         refit_keys: refit_keys,
         setConfig: setConfig,
