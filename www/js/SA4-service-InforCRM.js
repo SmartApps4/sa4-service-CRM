@@ -59,14 +59,9 @@ angular.module('SA4.CRM', [])
     }
   };
 
-  var overrideCRM = function(JSONFile) {
-    return $http.get(
-        JSONFile
-    )
-    .then(function(result) {
-        CRM = result.data;
-    });
-  } 
+  var setCRMData = function(CRMdata) {
+    CRM = CRMdata; 
+  }; 
 
   var mapResult = function(input, map) {
     var output = []; 
@@ -120,7 +115,7 @@ function refit_keys(o, map){
 
   return {
         getCRM: getCRM,
-        overrideCRM: overrideCRM,
+        setCRMData: setCRMData,
         mapResults: mapResult,
         refit_keys: refit_keys,
         setConfig: setConfig,
