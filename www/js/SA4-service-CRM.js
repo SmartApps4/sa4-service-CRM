@@ -14,7 +14,7 @@ angular.module('SA4.CRM', [])
   var CRM = {
     InforCRM: {
       get: function(entity) {
-        return InforCRM.getFeeds(entity);
+        return InforCRM.getFeed(entity);
       },
       entities: {
         feeds: {
@@ -31,14 +31,6 @@ angular.module('SA4.CRM', [])
           select: null,
           fieldMap: null,
           format: "json",
-        },
-        contacts: {
-          name: "contacts",
-          type: "dynamic",
-          query: null,
-          select: null,
-          fieldMap: null,
-          format: "json"
         },
         opportunities: {
           name: "opportunities",
@@ -62,7 +54,10 @@ angular.module('SA4.CRM', [])
    //Get overrides for each entity  
    _.each(CRMData.entities, function(entityValue, entityKey) {
       _.each(CRMData.entities[entityKey], function(itemValue, itemKey){
-        CRM[CRMData.config.CRM][entityKey][itemKey] = itemValue; 
+        if(CRM[CRMData.config.CRM].entities[entityKey] == null){
+          CRM[CRMData.config.CRM].entities[entityKey] = {}; 
+        }
+        CRM[CRMData.config.CRM].entities[entityKey][itemKey] = itemValue; 
       })
     });
   }; 
@@ -190,21 +185,20 @@ angular.module('SA4.CRM', [])
     var getFeed = function(feedConfig){
       return $http.get(
         buildUrl(config.CRM_Url,"dynamic",feedConfig.name,feedConfig.query,feedConfig.select,"json"),
-        { headers: {'Authorization':  'Basic ' + btoa(config.username + ":" + config.password) }},
-        { method: 'GET', 
+        {method: 'GET', 
           transformResponse: function (data, headers) {
             if(feedConfig.fieldMap) {
               var data = data.replace(/\w+/g, function(m) {
-                return feedConfig.fieldMap[m] || m;
+              return feedConfig.fieldMap[m] || m;
               });
             }
-            return JSON.parse(data);  
+            return JSON.parse(data);
           }
-        }
+        },
+        { headers: {'Authorization':  'Basic ' + btoa(config.username + ":" + config.password) }}
       )
     };
-
-
+    
     //Entity Related Methods
     var getGroups = function (query){
       return $http.get(
